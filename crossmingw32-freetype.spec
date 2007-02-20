@@ -106,6 +106,7 @@ ANSI C и Pascal. Она была разработана для
 %setup -q -n %{_realname}-%{version}
 
 %build
+export PKG_CONFIG_PATH=%{_prefix}/lib/pkgconfig
 CFLAGS="%{rpmcflags} \
 %{?with_bytecode:-DTT_CONFIG_OPTION_BYTECODE_INTERPRETER} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING}" \
