@@ -111,10 +111,11 @@ CFLAGS="%{rpmcflags} \
 %{?with_bytecode:-DTT_CONFIG_OPTION_BYTECODE_INTERPRETER} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING}" \
 %configure \
-	AR="%{target}-ar" \
-	RANLIB="%{target}-ranlib" \
+	LDFLAGS="-shared %{rpmldflags}" \
 	--target=%{target} \
-	--host=%{target_platform}
+	--build=i686-pc-linux-gnu \
+	--host=%{target} \
+	--enable-shared
 
 %{__make}
 
@@ -130,9 +131,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {CHANGES FTL.TXT LICENSE.TXT PATENTS TODO formats.txt raster.txt}
+%doc docs/{CHANGES,FTL.TXT,LICENSE.TXT,PATENTS,TODO,formats.txt,raster.txt}
 %{_libdir}/lib*.a
 %{_libdir}/lib*.la
+%{_bindir}/*.dll
 %{_includedir}/freetype2
 %{_includedir}/*.h
 %{_aclocaldir}/*.m4
