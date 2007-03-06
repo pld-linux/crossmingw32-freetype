@@ -18,6 +18,7 @@ Group:		Development/Libraries
 Source0:	http://savannah.nongnu.org/download/freetype/%{_realname}-%{version}.tar.bz2
 # Source0-md5:	11e1186ca5520c5a284fa0a03f652035
 URL:		http://www.freetype.org/
+BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-zlib
 BuildRequires:	python
 Requires:	crossmingw32-zlib
