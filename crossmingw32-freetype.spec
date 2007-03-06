@@ -6,25 +6,21 @@
 %bcond_without	lcd             # disable filters reducing color fringes when
 #                 subpixel rendering for LCD (only used with a new 2.3.0 API;
 #                 patents pending)
+#
 %define		_realname   freetype
 Summary:	TrueType font rasterizer - Mingw32 cross version
-Summary(es.UTF-8):Biblioteca de render 3D de fuentes TrueType
-Summary(ko.UTF-8):자유롭게 어디든 쓸 수 있는 트루타입 글꼴을 다루는 엔진
 Summary(pl.UTF-8):Rasteryzer fontów TrueType - wersja skrośna dla Mingw32
-Summary(pt_BR.UTF-8):Biblioteca de renderização de fontes TrueType
-Summary(ru.UTF-8):Растеризатор шрифтов TrueType
-Summary(uk.UTF-8):Растеризатор шрифтів TrueType
 Name:		crossmingw32-%{_realname}
 Version:	2.3.1
 Release:	1
 License:	GPL or FTL
-Group:		Libraries
+Group:		Development/Libraries
 Source0:	http://savannah.nongnu.org/download/freetype/%{_realname}-%{version}.tar.bz2
 # Source0-md5:	11e1186ca5520c5a284fa0a03f652035
 URL:		http://www.freetype.org/
-BuildRequires:	automake
 BuildRequires:	crossmingw32-zlib
 BuildRequires:	python
+Requires:	crossmingw32-zlib
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags_ia32	-fomit-frame-pointer
@@ -36,13 +32,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		target			i386-mingw32
 %define		target_platform 	i386-pc-mingw32
 %define		arch			%{_prefix}/%{target}
-%define		gccarch			%{_prefix}/lib/gcc-lib/%{target}
-%define		gcclib			%{_prefix}/lib/gcc-lib/%{target}/%{version}
 
 %define		_sysprefix		/usr
 %define		_prefix			%{_sysprefix}/%{target}
-%define		_aclocaldir		%{_datadir}/aclocal
 %define		_pkgconfigdir		%{_libdir}/pkgconfig
+%define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
 
@@ -59,12 +53,7 @@ hint and render individual glyphs efficiently. You can also see it as
 a "TrueType driver" for a higher-level library, though rendering text
 with it is extremely easy, as demo-ed by the test programs.
 
-%description -l es.UTF-8
-FreeType es una máquina libre y portátil para en render de fuentes
-TrueType. Fue desarrollada para ofrecer soporte TrueType a una gran
-variedad de plataformas y ambientes. Observa que FreeType es una
-biblioteca y no una aplicación, a pesar de que algunos utilitarios se
-incluyan en este paquete.
+This package contains the cross version for Win32.
 
 %description -l pl.UTF-8
 FreeType jest biblioteką służącą do rasteryzacji fontów
@@ -78,40 +67,41 @@ bibliotek wyższego poziomu, jednak użycie samej biblioteki FreeType
 do rasteryzacji jest bardzo proste, co można zobaczyć w programach
 demonstracyjnych.
 
-%description -l pt_BR.UTF-8
-FreeType é uma máquina livre e portável para renderização de
-fontes TrueType. Ela foi desenvolvida para fornecer suporte TrueType a
-uma grande variedade de plataformas e ambientes. Note que FreeType é
-uma biblioteca e não uma aplicação, apesar que alguns utilitários
-são incluídos neste pacote.
+Ten pakiet zawiera wersję skrośną dla Win32.
 
-%description -l ru.UTF-8
-Библиотека FreeType - это свободная
-переносимая библиотека для
-рендеринга (растеризации) шрифтов
-TrueType, доступная в исходных текстах на
-ANSI C и Pascal. Она была разработана для
-поддержки TT на разнообразных
-платформах.
+%package static
+Summary:	Static freetype library (cross mingw32 version)
+Summary(pl.UTF-8):	Statyczna biblioteka freetype (wersja skrośna mingw32)
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
 
-%description -l uk.UTF-8
-Бібліотека FreeType - це вільна переносима
-бібліотека для рендерингу
-(растеризації) шрифтів TrueType, що
-розповсюджується у вихідних текстах
-на C та Pascal. Вона була розроблена для
-підтримки TT на різних платформах.
+%description static
+Static freetype library (cross mingw32 version).
+
+%description static -l pl.UTF-8
+Statyczna biblioteka freetype (wersja skrośna mingw32).
+
+%package dll
+Summary:	DLL freetype library for Windows
+Summary(pl.UTF-8):	Biblioteka DLL freetype dla Windows
+Group:		Applications/Emulators
+Requires:	crossmingw32-zlib-dll
+Requires:	wine
+
+%description dll
+DLL freetype library for Windows.
+
+%description dll -l pl.UTF-8
+Biblioteka DLL freetype dla Windows.
 
 %prep
 %setup -q -n %{_realname}-%{version}
 
 %build
-export PKG_CONFIG_PATH=%{_prefix}/lib/pkgconfig
 CFLAGS="%{rpmcflags} \
 %{?with_bytecode:-DTT_CONFIG_OPTION_BYTECODE_INTERPRETER} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING}" \
 %configure \
-	LDFLAGS="-shared %{rpmldflags}" \
 	--target=%{target} \
 	--build=i686-pc-linux-gnu \
 	--host=%{target} \
@@ -121,10 +111,19 @@ CFLAGS="%{rpmcflags} \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT%{_dlldir}
+mv -f $RPM_BUILD_ROOT%{_prefix}/bin/*.dll $RPM_BUILD_ROOT%{_dlldir}
+
+%if 0%{!?debug:1}
+%{target}-strip --strip-unneeded -R.comment -R.note $RPM_BUILD_ROOT%{_dlldir}/*.dll
+%{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
+%endif
+
+rm -rf $RPM_BUILD_ROOT%{_datadir}/aclocal
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -132,10 +131,16 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc docs/{CHANGES,FTL.TXT,LICENSE.TXT,PATENTS,TODO,formats.txt,raster.txt}
-%{_libdir}/lib*.a
-%{_libdir}/lib*.la
-%{_bindir}/*.dll
+%{_libdir}/libfreetype.dll.a
+%{_libdir}/libfreetype.la
 %{_includedir}/freetype2
 %{_includedir}/*.h
-%{_aclocaldir}/*.m4
 %{_pkgconfigdir}/*.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libfreetype.a
+
+%files dll
+%defattr(644,root,root,755)
+%{_dlldir}/libfreetype-*.dll
