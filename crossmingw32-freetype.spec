@@ -113,7 +113,7 @@ CFLAGS="%{rpmcflags} \
 # link shared library
 cd objs/.libs
 %{__cc} \
-	--shared *.o -llualib50 -llua50 -lm -o libfreetype.dll \
+	--shared *.o -lm -o libfreetype.dll \
 	-Wl,--enable-auto-image-base -Wl,--out-implib,libfreetype.dll.a -lz
 cd ../..
 
