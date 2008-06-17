@@ -1,0 +1,2 @@
+- updated to 2.3.6 (fixes some potential security problems)
+  [fixes CVE-2008-1806, CVE-2008-1807, CVE-2008-1808]
