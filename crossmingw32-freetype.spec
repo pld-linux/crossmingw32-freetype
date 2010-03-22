@@ -1,22 +1,18 @@
 #
 # Conditional build:
-%bcond_without	bytecode	# without TT bytecode interpreter
-#		 (patents pending in USA, Japan etc., but now it includes
-#		  also patent-free hinting workaround)
-%bcond_without	lcd             # disable filters reducing color fringes when
-#                 subpixel rendering for LCD (only used with a new 2.3.0 API;
-#                 patents pending)
+%bcond_without	bytecode	# without TT bytecode interpreter (Apple patents in USA)
+%bcond_without	lcd		# without LCD subpixel color filtering (Microsoft patents in USA)
 #
 %define		realname   freetype
 Summary:	TrueType font rasterizer - Mingw32 cross version
 Summary(pl.UTF-8):Rasteryzer fontów TrueType - wersja skrośna dla Mingw32
 Name:		crossmingw32-%{realname}
-Version:	2.3.7
+Version:	2.3.12
 Release:	1
 License:	GPL or FTL
 Group:		Development/Libraries
-Source0:	http://savannah.nongnu.org/download/freetype/%{realname}-%{version}.tar.bz2
-# Source0-md5:	83306194817ebdea554133b4232a34aa
+Source0:	http://downloads.sourceforge.net/freetype/%{realname}-%{version}.tar.bz2
+# Source0-md5:	e974a82e5939be8e05ee65f07275d7c5
 URL:		http://www.freetype.org/
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
@@ -40,6 +36,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
+
+%ifnarch %{ix86}
+# arch-specific flags (like alpha's -mieee) are not valid for i386 gcc
+%define		optflags	-O2
+%endif
+# -z options are invalid for mingw linker
+%define		filterout_ld	-Wl,-z,.*
 
 %description
 The FreeType engine is a free and portable TrueType font rendering
