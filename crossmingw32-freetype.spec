@@ -1,18 +1,17 @@
 #
 # Conditional build:
-%bcond_without	bytecode	# without TT bytecode interpreter (Apple patents in USA)
 %bcond_without	lcd		# without LCD subpixel color filtering (Microsoft patents in USA)
 #
 %define		realname   freetype
 Summary:	TrueType font rasterizer - Mingw32 cross version
 Summary(pl.UTF-8):Rasteryzer fontów TrueType - wersja skrośna dla Mingw32
 Name:		crossmingw32-%{realname}
-Version:	2.3.12
+Version:	2.4.0
 Release:	1
 License:	GPL or FTL
 Group:		Development/Libraries
 Source0:	http://downloads.sourceforge.net/freetype/%{realname}-%{version}.tar.bz2
-# Source0-md5:	e974a82e5939be8e05ee65f07275d7c5
+# Source0-md5:	6dd4b655bf711f64562198b63b073032
 URL:		http://www.freetype.org/
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
@@ -103,7 +102,6 @@ Biblioteka DLL freetype dla Windows.
 
 %build
 CFLAGS="%{rpmcflags} \
-%{?with_bytecode:-DTT_CONFIG_OPTION_BYTECODE_INTERPRETER} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING}" \
 %configure \
 	--target=%{target} \
@@ -134,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc docs/{CHANGES,FTL.TXT,LICENSE.TXT,PATENTS,TODO,formats.txt,raster.txt}
+%doc docs/{CHANGES,FTL.TXT,LICENSE.TXT,TODO,formats.txt,raster.txt}
 %{_libdir}/libfreetype.dll.a
 %{_libdir}/libfreetype.la
 %{_includedir}/freetype2
