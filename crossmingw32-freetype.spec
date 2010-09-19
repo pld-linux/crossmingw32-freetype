@@ -3,8 +3,8 @@
 %bcond_without	lcd		# without LCD subpixel color filtering (Microsoft patents in USA)
 #
 %define		realname   freetype
-Summary:	TrueType font rasterizer - Mingw32 cross version
-Summary(pl.UTF-8):Rasteryzer fontów TrueType - wersja skrośna dla Mingw32
+Summary:	TrueType font rasterizer - MinGW32 cross version
+Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
 Version:	2.4.2
 Release:	1
@@ -73,16 +73,16 @@ demonstracyjnych.
 Ten pakiet zawiera wersję skrośną dla Win32.
 
 %package static
-Summary:	Static freetype library (cross mingw32 version)
-Summary(pl.UTF-8):	Statyczna biblioteka freetype (wersja skrośna mingw32)
+Summary:	Static freetype library (cross MinGW32 version)
+Summary(pl.UTF-8):	Statyczna biblioteka freetype (wersja skrośna MinGW32)
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description static
-Static freetype library (cross mingw32 version).
+Static freetype library (cross MinGW32 version).
 
 %description static -l pl.UTF-8
-Statyczna biblioteka freetype (wersja skrośna mingw32).
+Statyczna biblioteka freetype (wersja skrośna MinGW32).
 
 %package dll
 Summary:	DLL freetype library for Windows
