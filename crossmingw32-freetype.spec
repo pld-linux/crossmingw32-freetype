@@ -13,9 +13,11 @@ Group:		Development/Libraries
 Source0:	http://downloads.sourceforge.net/freetype/%{realname}-%{version}.tar.bz2
 # Source0-md5:	77a893dae81fd5b896632715ca041179
 URL:		http://www.freetype.org/
+BuildRequires:	crossmingw32-bzip2
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
 BuildRequires:	python
+Requires:	crossmingw32-bzip2
 Requires:	crossmingw32-zlib >= 1.2.3-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
