@@ -7,7 +7,7 @@ Summary:	TrueType font rasterizer - MinGW32 cross version
 Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
 Version:	2.4.11
-Release:	1
+Release:	2
 License:	GPL v2 or FTL
 Group:		Development/Libraries
 Source0:	http://downloads.sourceforge.net/freetype/%{realname}-%{version}.tar.bz2
@@ -37,6 +37,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
+%define		__pkgconfig_provides	%{nil}
 
 %ifnarch %{ix86}
 # arch-specific flags (like alpha's -mieee) are not valid for i386 gcc
