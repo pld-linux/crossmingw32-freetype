@@ -7,7 +7,7 @@ Summary:	TrueType font rasterizer - MinGW32 cross version
 Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
 Version:	2.4.11
-Release:	3
+Release:	4
 License:	GPL v2 or FTL
 Group:		Development/Libraries
 Source0:	http://downloads.sourceforge.net/freetype/%{realname}-%{version}.tar.bz2
@@ -44,8 +44,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # arch-specific flags (like alpha's -mieee) are not valid for i386 gcc
 %define		optflags	-O2
 %endif
-# -z options are invalid for mingw linker
+# -z options are invalid for mingw linker, most of -f options are Linux-specific
 %define		filterout_ld	-Wl,-z,.*
+%define		filterout_c		-f[-a-z0-9=]*
 
 %description
 The FreeType engine is a free and portable TrueType font rendering
