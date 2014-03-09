@@ -1,25 +1,28 @@
 #
 # Conditional build:
 %bcond_without	lcd		# without LCD subpixel color filtering (Microsoft patents in USA)
+%bcond_without	harfbuzz	# harfbuzz based autohinting
 #
 %define		realname   freetype
 Summary:	TrueType font rasterizer - MinGW32 cross version
 Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	2.5.2
+Version:	2.5.3
 Release:	1
 License:	GPL v2 or FTL
 Group:		Development/Libraries
 Source0:	http://download.savannah.gnu.org/releases/freetype/%{realname}-%{version}.tar.bz2
-# Source0-md5:	10e8f4d6a019b124088d18bc26123a25
+# Source0-md5:	d6b60f06bfc046e43ab2a6cbfd171d65
 URL:		http://www.freetype.org/
 BuildRequires:	crossmingw32-bzip2
 BuildRequires:	crossmingw32-gcc
+%{?with_harfbuzz:BuildRequires:	crossmingw32-harfbuzz >= 0.9.19}
 BuildRequires:	crossmingw32-libpng
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
 BuildRequires:	pkgconfig
 BuildRequires:	python
 Requires:	crossmingw32-bzip2
+%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz >= 0.9.19}
 Requires:	crossmingw32-libpng
 Requires:	crossmingw32-zlib >= 1.2.3-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -97,6 +100,7 @@ Summary:	DLL freetype library for Windows
 Summary(pl.UTF-8):	Biblioteka DLL freetype dla Windows
 Group:		Applications/Emulators
 Requires:	crossmingw32-bzip2-dll
+%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz-dll >= 0.9.19}
 Requires:	crossmingw32-libpng-dll
 Requires:	crossmingw32-zlib-dll
 Requires:	wine
@@ -115,6 +119,7 @@ export PKG_CONFIG_LIBDIR=%{_pkgconfigdir}
 CFLAGS="%{rpmcflags} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING} \
 -DTT_CONFIG_OPTION_SUBPIXEL_HINTING \
+%{?with_harfbuzz:-DFT_CONFIG_OPTION_USE_HARFBUZZ} \
 " \
 %configure \
 	LIBPNG_CFLAGS="$(pkg-config --cflags libpng)" \
@@ -139,6 +144,9 @@ install -d $RPM_BUILD_ROOT%{_dlldir}
 %{target}-strip --strip-unneeded -R.comment -R.note $RPM_BUILD_ROOT%{_dlldir}/*.dll
 %{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
 %endif
+
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/freetype-config \
+	$RPM_BUILD_ROOT%{_mandir}/man1/freetype-config.1
 
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/aclocal
 
