@@ -119,7 +119,6 @@ export PKG_CONFIG_LIBDIR=%{_pkgconfigdir}
 CFLAGS="%{rpmcflags} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING} \
 -DTT_CONFIG_OPTION_SUBPIXEL_HINTING \
-%{?with_harfbuzz:-DFT_CONFIG_OPTION_USE_HARFBUZZ} \
 " \
 %configure \
 	LIBPNG_CFLAGS="$(pkg-config --cflags libpng)" \
@@ -127,7 +126,8 @@ CFLAGS="%{rpmcflags} \
 	--target=%{target} \
 	--build=i686-pc-linux-gnu \
 	--host=%{target} \
-	--enable-shared
+	--enable-shared \
+	%{!?with_harfbuzz:--without-harfbuzz}
 
 %{__make}
 
