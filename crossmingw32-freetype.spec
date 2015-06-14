@@ -7,19 +7,19 @@
 Summary:	TrueType font rasterizer - MinGW32 cross version
 Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	2.5.5
-Release:	3
+Version:	2.6
+Release:	1
 License:	GPL v2 or FTL
 Group:		Development/Libraries
 Source0:	http://download.savannah.gnu.org/releases/freetype/%{realname}-%{version}.tar.bz2
-# Source0-md5:	2a7a314927011d5030903179cf183be0
+# Source0-md5:	5682890cb0267f6671dd3de6eabd3e69
 URL:		http://www.freetype.org/
 BuildRequires:	crossmingw32-bzip2
 BuildRequires:	crossmingw32-gcc
 %{?with_harfbuzz:BuildRequires:	crossmingw32-harfbuzz >= 0.9.19}
 BuildRequires:	crossmingw32-libpng
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
-BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig >= 1:0.24
 BuildRequires:	python
 Requires:	crossmingw32-bzip2
 %{?with_harfbuzz:Requires:	crossmingw32-harfbuzz >= 0.9.19}
