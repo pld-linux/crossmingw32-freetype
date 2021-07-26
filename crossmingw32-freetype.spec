@@ -7,16 +7,16 @@
 Summary:	TrueType font rasterizer - MinGW32 cross version
 Summary(pl.UTF-8):	Rasteryzer fontów TrueType - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	2.10.4
+Version:	2.11.0
 Release:	1
 License:	GPL v2 or FTL
 Group:		Development/Libraries
-Source0:	http://download.savannah.gnu.org/releases/freetype/%{realname}-%{version}.tar.xz
-# Source0-md5:	0e6c0e9b218be3ba3e26e1d23b1c80dd
+Source0:	https://download.savannah.gnu.org/releases/freetype/%{realname}-%{version}.tar.xz
+# Source0-md5:	f931582653774e310ed3a7e49b7167a3
 URL:		http://www.freetype.org/
 BuildRequires:	crossmingw32-bzip2
 BuildRequires:	crossmingw32-gcc
-%{?with_harfbuzz:BuildRequires:	crossmingw32-harfbuzz >= 1.8.0}
+%{?with_harfbuzz:BuildRequires:	crossmingw32-harfbuzz >= 2.0.0}
 BuildRequires:	crossmingw32-libpng
 BuildRequires:	crossmingw32-zlib >= 1.2.3-2
 BuildRequires:	pkgconfig >= 1:0.24
@@ -24,7 +24,7 @@ BuildRequires:	python
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	crossmingw32-bzip2
-%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz >= 1.8.0}
+%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz >= 2.0.0}
 Requires:	crossmingw32-libpng
 Requires:	crossmingw32-zlib >= 1.2.3-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -102,7 +102,7 @@ Summary:	DLL freetype library for Windows
 Summary(pl.UTF-8):	Biblioteka DLL freetype dla Windows
 Group:		Applications/Emulators
 Requires:	crossmingw32-bzip2-dll
-%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz-dll >= 1.8.0}
+%{?with_harfbuzz:Requires:	crossmingw32-harfbuzz-dll >= 2.0.0}
 Requires:	crossmingw32-libpng-dll
 Requires:	crossmingw32-zlib-dll
 Requires:	wine
@@ -154,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc docs/{CHANGES,FTL.TXT,LICENSE.TXT,TODO,formats.txt,raster.txt}
+%doc LICENSE.TXT docs/{CHANGES,FTL.TXT,TODO,formats.txt,raster.txt}
 %{_libdir}/libfreetype.dll.a
 %{_libdir}/libfreetype.la
 %{_includedir}/freetype2
