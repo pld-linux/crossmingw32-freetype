@@ -1,0 +1,10 @@
+--- freetype-2.12.0/builds/windows/ftsystem.c.orig	2022-03-30 20:50:28.000000000 +0200
++++ freetype-2.12.0/builds/windows/ftsystem.c	2022-04-02 14:56:53.702763942 +0200
+@@ -28,6 +28,7 @@
+   /* memory mapping and allocation includes and definitions */
+ #define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
++#include <winapifamily.h>
+ 
+ 
+   /**************************************************************************
