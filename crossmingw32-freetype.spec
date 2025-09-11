@@ -121,6 +121,7 @@ Biblioteka DLL freetype dla Windows.
 %patch -P0 -p1
 
 %build
+unset PKG_CONFIG_PATH
 export PKG_CONFIG_LIBDIR=%{_pkgconfigdir}
 CFLAGS="%{rpmcflags} \
 %{?with_lcd:-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING} \
